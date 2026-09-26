@@ -1,4 +1,4 @@
-#TrueLens AI
+# 🔍 TrueLens AI
 
 > AI-powered image authenticity detection system.
 
@@ -25,42 +25,58 @@ Current model:
 
 ```text
 prithivMLmods/Mirage-Photo-Classifier
+```
 
 The model performs binary classification:
 
+```text
 Real
 Fake
+```
 
 TrueLens AI maps these results to:
 
+```text
 REAL
 AI_GENERATED
+```
 
-The model is loaded using PyTorch and Hugging Face Transformers.
+The model is loaded using **PyTorch** and **Hugging Face Transformers**.
 
-🛠️ Tech Stack
-Frontend
-React
-Vite
-JavaScript
-Axios
-React Router
-Backend
-Python
-FastAPI
-Uvicorn
-SQLAlchemy
-Pydantic
-JWT Authentication
-Machine Learning
-PyTorch
-Hugging Face Transformers
-Hugging Face Hub
-SigLIP2
-Pillow
-Database
-SQLite
-📁 Project Structure
+## 🛠️ Tech Stack
+
+### Frontend
+
+- React
+- Vite
+- JavaScript
+- Axios
+- React Router
+
+### Backend
+
+- Python
+- FastAPI
+- Uvicorn
+- SQLAlchemy
+- Pydantic
+- JWT Authentication
+
+### Machine Learning
+
+- PyTorch
+- Hugging Face Transformers
+- Hugging Face Hub
+- SigLIP2
+- Pillow
+
+### Database
+
+- SQLite
+
+## 📁 Project Structure
+
+```text
 TrueLens-AI/
 ├── backend/
 ├── frontend/
@@ -73,46 +89,82 @@ TrueLens-AI/
 ├── requirements.txt
 ├── README.md
 └── .env.example
-🚀 Installation
-1. Clone Repository
+```
+
+## 🚀 Installation
+
+### 1. Clone Repository
+
+```bash
 git clone https://github.com/shivarjunchaturvedi/TrueLens-AI.git
 cd TrueLens-AI
-2. Create Python Environment
+```
+
+### 2. Create Python Environment
+
+```bash
 python -m venv .venv
+```
 
 For Windows:
 
+```powershell
 .\.venv\Scripts\activate
-3. Install Backend Dependencies
+```
+
+### 3. Install Backend Dependencies
+
+```bash
 pip install -r requirements.txt
-4. Install Frontend Dependencies
+```
+
+### 4. Install Frontend Dependencies
+
+```powershell
 cd frontend
 npm install
-▶️ Run the Project
-Backend
+```
+
+## ▶️ Run the Project
+
+### Backend
 
 From the project root:
 
+```powershell
 uvicorn app.main:app --app-dir backend --reload --host 0.0.0.0 --port 8000
+```
 
 Backend:
 
+```text
 http://localhost:8000
+```
 
 FastAPI documentation:
 
+```text
 http://localhost:8000/docs
-Frontend
+```
+
+### Frontend
 
 Open another terminal:
 
+```powershell
 cd frontend
 npm run dev
+```
 
 Frontend:
 
+```text
 http://localhost:5173
-🔬 Detection Process
+```
+
+## 🔬 Detection Process
+
+```text
 Upload Image
      ↓
 File Validation
@@ -128,20 +180,23 @@ Confidence Calculation
 Result Display
      ↓
 Scan History
-📊 Results
+```
+
+## 📊 Results
 
 TrueLens AI displays:
 
-Prediction
-Confidence percentage
-Probability distribution
-Model name
-Model version
-Processing time
-Uploaded image
+- Prediction
+- Confidence percentage
+- Probability distribution
+- Model name
+- Model version
+- Processing time
+- Uploaded image
 
 Example:
 
+```text
 Prediction: REAL
 
 Confidence: 98.98%
@@ -149,33 +204,36 @@ Confidence: 98.98%
 Real:           98.98%
 AI Generated:    1.02%
 Manipulated:     0.00%
+```
 
-Confidence values are model estimates and should not be treated as absolute proof.
+> Confidence values are model estimates and should not be treated as absolute proof.
 
-⚠️ Limitations
+## ⚠️ Limitations
 
-The current model is a binary Real/Fake classifier.
+The current model is a **binary Real/Fake classifier**.
 
 It does not reliably distinguish between:
 
-AI-generated images
-Traditional deepfakes
-Other manipulated images
+- AI-generated images
+- Traditional deepfakes
+- Other manipulated images
 
-Therefore, TrueLens AI provides an AI-based image authenticity estimate, not definitive forensic proof.
+Therefore, TrueLens AI provides an **AI-based image authenticity estimate**, not definitive forensic proof.
 
 Results can be affected by:
 
-Image quality
-Compression
-Resizing
-Unseen generation techniques
-Image manipulation
-Differences between training data and real-world images
-🧠 Machine Learning
+- Image quality
+- Compression
+- Resizing
+- Unseen generation techniques
+- Image manipulation
+- Differences between training data and real-world images
+
+## 🧠 Machine Learning
 
 The repository also contains ML training and experimentation code under:
 
+```text
 ml/
 ├── model.py
 ├── config.py
@@ -183,74 +241,87 @@ ml/
 ├── preprocessing/
 ├── training/
 └── dataset/
+```
 
 The project architecture supports the following conceptual classes:
 
+```text
 REAL
 AI_GENERATED
 MANIPULATED
+```
 
 The current application inference system uses the pretrained Mirage model for Real/Fake classification.
 
-🧪 Testing
+## 🧪 Testing
 
 Run backend tests with:
 
+```bash
 pytest
+```
 
 Test files are located in:
 
+```text
 tests/
-🔒 Security
+```
+
+## 🔒 Security
 
 TrueLens AI includes:
 
-JWT authentication
-Protected API endpoints
-File validation
-Upload size limits
-User-specific scan history
-Database-backed user management
+- JWT authentication
+- Protected API endpoints
+- File validation
+- Upload size limits
+- User-specific scan history
+- Database-backed user management
 
 For production deployment, additional security measures are recommended.
 
-🔮 Future Improvements
-🎯 Dedicated AI-generated image detector
-🎭 Dedicated deepfake detector
-🧠 Multi-model ensemble
-🔥 Better visual explainability
-📊 Precision / Recall / F1 evaluation
-🎥 Video deepfake detection
-🎙️ Audio deepfake detection
-☁️ Cloud deployment
-📱 Improved mobile support
-⚡ Optimized inference
-🔐 Production-grade security
-👥 Team Project
+## 🔮 Future Improvements
+
+- 🎯 Dedicated AI-generated image detector
+- 🎭 Dedicated deepfake detector
+- 🧠 Multi-model ensemble
+- 🔥 Better visual explainability
+- 📊 Precision / Recall / F1 evaluation
+- 🎥 Video deepfake detection
+- 🎙️ Audio deepfake detection
+- ☁️ Cloud deployment
+- 📱 Improved mobile support
+- ⚡ Optimized inference
+- 🔐 Production-grade security
+
+## 👥 Team Project
 
 TrueLens AI is a collaborative software engineering and machine-learning project combining:
 
-Full-stack development
-Machine learning
-Image processing
-Authentication
-Database management
-UI/UX
-API development
-Testing
-Deployment
-⚠️ Disclaimer
+- Full-stack development
+- Machine learning
+- Image processing
+- Authentication
+- Database management
+- UI/UX
+- API development
+- Testing
+- Deployment
+
+## ⚠️ Disclaimer
 
 TrueLens AI is an experimental AI-based system.
 
 Its predictions should not be treated as definitive proof of image authenticity or used as the sole basis for legal, financial, security, journalistic, or other high-stakes decisions.
 
-👨‍💻 Developer
+## 👨‍💻 Developer
 
-Shivarjun Chaturvedi
+**Shivarjun Chaturvedi**
 
 🔗 GitHub:
+
 https://github.com/shivarjunchaturvedi
 
-⭐ TrueLens AI — Detect. Analyze. Understand.
+---
 
+⭐ **TrueLens AI — Detect. Analyze. Understand.**
