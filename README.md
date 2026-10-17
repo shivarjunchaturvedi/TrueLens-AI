@@ -1,6 +1,19 @@
+<div align="center">
+
 # 🔍 TrueLens AI
 
-> AI-powered image authenticity detection system.
+### AI-Based Image Authenticity Estimation
+
+A full-stack application that classifies images as real or AI-generated using a pretrained model and displays confidence estimates. Results are estimates, not forensic proof.
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
+
+[Features](#features) · [Tech Stack](#tech-stack) · [Installation](#installation) · [Limitations](#limitations)
+
+</div>
 
 TrueLens AI is a full-stack web application that analyzes images and provides an AI-based estimate of whether an image appears to be **Real or AI-generated/Fake**.
 
