@@ -11,6 +11,9 @@ A full-stack application that classifies images as real or AI-generated using a 
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
 
+[![GitHub stars](https://img.shields.io/github/stars/shivarjunchaturvedi/TrueLens-AI?style=flat-square)](https://github.com/shivarjunchaturvedi/TrueLens-AI/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/shivarjunchaturvedi/TrueLens-AI?style=flat-square)](https://github.com/shivarjunchaturvedi/TrueLens-AI/issues)
+
 [Features](#features) · [Tech Stack](#tech-stack) · [Installation](#installation) · [Limitations](#limitations)
 
 </div>
