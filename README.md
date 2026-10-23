@@ -4,7 +4,7 @@
 
 ### AI-Based Image Authenticity Estimation
 
-A full-stack application that classifies images as real or AI-generated using a pretrained model and displays confidence estimates. Results are estimates, not forensic proof.
+A full-stack application that estimates whether an image appears real or AI-generated using a pretrained classifier, with user accounts, scan history, and a React dashboard. Results are estimates—not forensic proof.
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
@@ -29,7 +29,7 @@ TrueLens AI is a full-stack web application that analyzes images and provides an
 - 🔐 JWT authentication
 - 📜 Detection history
 - 📈 Dashboard
-- ⚡ GPU acceleration with CUDA
+- ⚡ GPU acceleration with CUDA when available
 - 🌐 Responsive React frontend
 - 🚀 FastAPI backend
 - 🗄️ SQLite database
@@ -43,19 +43,14 @@ Current model:
 prithivMLmods/Mirage-Photo-Classifier
 ```
 
-The model performs binary classification:
-
-```text
-Real
-Fake
-```
-
-TrueLens AI maps these results to:
+The API currently loads `prithivMLmods/Mirage-Photo-Classifier` through Hugging Face Transformers and maps its recognized labels to a binary result:
 
 ```text
 REAL
 AI_GENERATED
 ```
+
+The response schema retains a `manipulated` probability field for compatibility with existing UI/database code. The current binary model does **not** independently detect manipulation, so this field is returned as `0.0` rather than interpreted as a third-class prediction.
 
 The model is loaded using **PyTorch** and **Hugging Face Transformers**.
 
@@ -222,11 +217,11 @@ AI Generated:    1.02%
 Manipulated:     0.00%
 ```
 
-> Confidence values are model estimates and should not be treated as absolute proof.
+> Confidence values are model estimates and should not be treated as absolute proof. A high score is not a calibrated forensic certainty.
 
 ## ⚠️ Limitations
 
-The current model is a **binary Real/Fake classifier**.
+The active FastAPI prediction service uses a **binary Real/Fake classifier**.
 
 It does not reliably distinguish between:
 
