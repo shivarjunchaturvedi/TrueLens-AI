@@ -1,5 +1,13 @@
+"""
+Hugging Face image-classification inference used by the active API route.
+
+The configured Mirage Photo Classifier is treated as a binary real/fake model.
+The API schema retains a manipulated field for compatibility, so this implementation
+reports that field as 0 rather than pretending the model predicts a third class.
+"""
 import os
 import time
+from functools import lru_cache
 
 import torch
 from PIL import Image
@@ -7,72 +15,76 @@ from transformers import AutoImageProcessor, AutoModelForImageClassification
 
 from app.config import settings
 
-
 MODEL_ID = "prithivMLmods/Mirage-Photo-Classifier"
 
-_processor = None
-_model = None
 
-
+@lru_cache(maxsize=1)
 def get_model():
-    global _processor, _model
-
-    if _model is None:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-
-        _processor = AutoImageProcessor.from_pretrained(MODEL_ID)
-        _model = AutoModelForImageClassification.from_pretrained(MODEL_ID)
-        _model = _model.to(device)
-        _model.eval()
-
-    return _processor, _model
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    processor = AutoImageProcessor.from_pretrained(MODEL_ID)
+    model = AutoModelForImageClassification.from_pretrained(MODEL_ID)
+    model = model.to(device)
+    model.eval()
+    return processor, model
 
 
-def run_prediction(image_path: str, heatmap_output_path: str) -> dict:
+def _label_for(model, index: int) -> str:
+    labels = getattr(model.config, "id2label", {}) or {}
+    return str(labels.get(index, labels.get(str(index), f"class_{index}"))).strip().lower()
+
+
+def run_prediction(image_path: str, heatmap_output_path: str | None = None) -> dict:
     start = time.perf_counter()
-
-    if not os.path.exists(image_path):
-        raise FileNotFoundError(image_path)
+    if not os.path.isfile(image_path):
+        raise FileNotFoundError(f"Image not found: {image_path}")
 
     processor, model = get_model()
     device = next(model.parameters()).device
 
-    image = Image.open(image_path).convert("RGB")
+    with Image.open(image_path) as opened:
+        image = opened.convert("RGB")
 
     inputs = processor(images=image, return_tensors="pt")
-    inputs = {k: v.to(device) for k, v in inputs.items()}
+    inputs = {key: value.to(device) for key, value in inputs.items()}
 
-    with torch.no_grad():
+    with torch.inference_mode():
         outputs = model(**inputs)
-        probabilities = torch.softmax(outputs.logits, dim=-1)[0]
+        probs = torch.softmax(outputs.logits, dim=-1)[0].detach().cpu().tolist()
 
-    labels = model.config.id2label
+    labels = [_label_for(model, i) for i in range(len(probs))]
+    real_indices = [i for i, label in enumerate(labels) if "real" in label]
+    fake_indices = [i for i, label in enumerate(labels) if any(term in label for term in ("fake", "synthetic", "generated", "artificial"))]
 
-    real = 0.0
-    fake = 0.0
+    # Refuse to silently return all-zero confidence if the upstream model label map changes.
+    if not real_indices or not fake_indices:
+        raise RuntimeError(
+            "The configured model labels could not be mapped to Real/Fake classes. "
+            f"Received labels: {labels!r}"
+        )
 
-    for i, probability in enumerate(probabilities):
-        label = labels[i].lower()
-        score = float(probability)
+    real = sum(float(probs[i]) for i in real_indices)
+    fake = sum(float(probs[i]) for i in fake_indices)
+    total = real + fake
+    if total <= 0:
+        raise RuntimeError("The model returned invalid class probabilities.")
 
-        if "real" in label:
-            real = score
-        elif "fake" in label:
-            fake = score
-
+    # Normalize across the mapped binary classes in case the upstream model includes
+    # additional labels that are outside the current application's output schema.
+    real /= total
+    fake /= total
     prediction = "REAL" if real >= fake else "AI_GENERATED"
     confidence = max(real, fake) * 100
 
     return {
         "prediction": prediction,
-        "confidence": confidence,
+        "confidence": round(confidence, 2),
         "probabilities": {
-            "real": real,
-            "ai_generated": fake,
+            "real": round(real * 100, 2),
+            "ai_generated": round(fake * 100, 2),
             "manipulated": 0.0,
         },
         "model_name": MODEL_ID,
-        "model_version": "2.0-mirage",
+        "model_version": settings.MODEL_VERSION,
         "processing_time_seconds": round(time.perf_counter() - start, 3),
         "heatmap_generated": False,
     }
