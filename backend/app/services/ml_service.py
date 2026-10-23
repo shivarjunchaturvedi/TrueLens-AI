@@ -53,7 +53,7 @@ def run_prediction(image_path: str, heatmap_output_path: str | None = None) -> d
 
     labels = [_label_for(model, i) for i in range(len(probs))]
     real_indices = [i for i, label in enumerate(labels) if "real" in label]
-    fake_indices = [i for i, label in enumerate(labels) if any(term in label for term in ("fake", "synthetic", "generated", "artificial"))]
+    fake_indices = [i for i, label in enumerate(labels) if any(term in label for term in ("fake", "synthetic", "generated", "artificial", "ai-generated", "ai generated"))]
 
     # Refuse to silently return all-zero confidence if the upstream model label map changes.
     if not real_indices or not fake_indices:
